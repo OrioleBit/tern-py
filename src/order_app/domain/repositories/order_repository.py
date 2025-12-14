@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from domain.entities.order import Order
+from order_app.domain.entities.order import Order
 from uuid import UUID
 
 

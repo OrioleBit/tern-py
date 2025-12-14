@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from domain.entities.product import Product
+from typing import Optional
+from order_app.domain.entities.product import Product
 from uuid import UUID
 
 
@@ -10,7 +11,12 @@ class ProductRepository(ABC):
         pass
 
     @abstractmethod
-    def get_by_id(self, product_id: UUID):
+    def update(self, product: Product) -> None:
+        """Update an existing product in the repository."""
+        pass
+
+    @abstractmethod
+    def get_by_id(self, product_id: UUID) -> Optional[Product]:
         """Retrieve a product by its ID."""
         pass
 
