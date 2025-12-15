@@ -13,3 +13,13 @@ def order_repository():
             self.get_list = MagicMock()
 
     return MockOrderRepository()
+
+
+@pytest.fixture
+def product_repository():
+    class MockProductRepository:
+        def __init__(self):
+            self.get_by_id = MagicMock()
+            self.update = MagicMock()
+
+    return MockProductRepository()

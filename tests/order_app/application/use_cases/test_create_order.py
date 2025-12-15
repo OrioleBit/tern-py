@@ -11,16 +11,6 @@ from order_app.application.use_cases.create_order import (
 from order_app.domain.entities.order import OrderItem
 
 
-@pytest.fixture
-def product_repository():
-    class MockProductRepository:
-        def __init__(self):
-            self.get_by_id = MagicMock()
-            self.update = MagicMock()
-
-    return MockProductRepository()
-
-
 def test_create_order(order_repository, product_repository):
     use_case = CreateOrderUseCase(
         order_repository=order_repository,

@@ -64,10 +64,16 @@ class Order(Entity):
         self.updated_at = datetime.datetime.now()
 
     def remove_item(self, order_item: OrderItem) -> None:
-        raise NotImplementedError("remove_item method is not implemented yet.")
+        if order_item in self._items:
+            self._items.remove(order_item)
+            self.updated_at = datetime.datetime.now()
 
-    def clear_items(self) -> None:
-        raise NotImplementedError("clear_items method is not implemented yet.")
+    def edit_item(self, product_id: str, quantity: int) -> None:
+        for item in self._items:
+            if item.product_id == product_id:
+                item.quantity = quantity
+                self.updated_at = datetime.datetime.now()
+                break
 
     @property
     def items(self) -> list[OrderItem]:
