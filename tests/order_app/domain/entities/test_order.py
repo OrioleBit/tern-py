@@ -1,16 +1,17 @@
 from decimal import Decimal
-from uuid import uuid4
 
 import pytest
 
 from order_app.domain.entities.order import Order, OrderItem, OrderStatus
 from order_app.domain.entities.product import Product
+from order_app.domain.entities.user import User
 from order_app.domain.value_objects.money import Money
 
 
 @pytest.fixture
 def order():
-    return Order(user_id=uuid4())
+    user = User.new(name="Test User", email="test@example.com")
+    return Order.new(user_id=user.id)
 
 
 def test_order_initial_status(order):
@@ -20,7 +21,7 @@ def test_order_initial_status(order):
 
 
 def test_add_order_item(order):
-    product = Product(
+    product = Product.new(
         name="Test Product",
         description="A test product",
         price=Money(Decimal("15.00")),
@@ -36,7 +37,7 @@ def test_add_order_item(order):
 
 
 def test_delete_order_item(order):
-    product = Product(
+    product = Product.new(
         name="Test Product",
         description="A test product",
         price=Money(Decimal("15.00")),
@@ -49,14 +50,14 @@ def test_delete_order_item(order):
 
 
 def test_edit_order_item(order):
-    product1 = Product(
+    product1 = Product.new(
         name="Test Product1",
         description="A test product1",
         price=Money(Decimal("15.00")),
         stock_quantity=10,
     )
 
-    product2 = Product(
+    product2 = Product.new(
         name="Test Product",
         description="A test product",
         price=Money(Decimal("20.00")),

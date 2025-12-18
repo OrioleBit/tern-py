@@ -18,8 +18,8 @@ class Product(Entity):
     )
     updated_at: Optional[datetime.datetime] = None
 
-    def __str__(self) -> str:
-        return f"Product(id={self.id}, name={self.name}, price={self.price}, stock={self.stock_quantity})"
+    # def __str__(self) -> str:
+    #     return f"Product(id={self.id}, name={self.name}, price={self.price}, stock_quantity={self.stock_quantity})"
 
     def decrease_stock(self, quantity: int) -> None:
         if quantity <= 0:

@@ -1,10 +1,11 @@
-from order_app.domain.entities.product import Product
 import pytest
+
+from order_app.domain.entities.product import Product
 
 
 @pytest.fixture
 def product():
-    return Product(
+    return Product.new(
         name="Test Product",
         description="A product for testing",
         price=10.0,

@@ -120,15 +120,15 @@ def test_edit_product_with_permission_by_customer(order_repository, product_repo
 
     user_id = uuid4()
 
-    order = Order(user_id=user_id)
+    order = Order.new(user_id=user_id)
     order.edit_item = mock.Mock()
-    product1 = Product(
+    product1 = Product.new(
         name="Test Product 1",
         description="A test product 1",
         price=Money(Decimal("10.00")),
         stock_quantity=100,
     )
-    product2 = Product(
+    product2 = Product.new(
         name="Test Product 2",
         description="A test product 2",
         price=Money(Decimal("5.00")),

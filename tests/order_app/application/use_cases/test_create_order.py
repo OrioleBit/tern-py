@@ -63,7 +63,7 @@ def test_create_order(order_repository, product_repository):
 
     product_repository.save.assert_any_call(product_1)
     product_repository.save.assert_any_call(product_2)
-    desired_order = Order(user_id=user_id)
+    desired_order = Order.new(user_id=user_id)
     desired_order.id = result.value.order_id
     desired_order.add_item(product_1, quantity=2)
     desired_order.add_item(product_2, quantity=1)

@@ -62,3 +62,7 @@ class Order(Entity):
 
     def __str__(self):
         return f"Order(id={self.id}, user_id={self.user_id}, items:[{', '.join(str(item) for item in self._items)}])"
+
+    def from_django_model(self, order):
+        self.id = order.id
+        self.user_id = order.user_id

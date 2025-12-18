@@ -13,7 +13,7 @@ class CreateOrderUseCase:
     product_repository: ProductRepository
 
     def execute(self, request: CreateOrderRequest) -> Result[OrderResponse]:
-        order = Order(user_id=request.user_id)
+        order = Order.new(user_id=request.user_id)
         products = []
         for item in request.items:
             product_id = item.product_id
@@ -25,6 +25,7 @@ class CreateOrderUseCase:
             products.append(product)
 
         for product in products:
+            print(product)
             self.product_repository.save(product)
         self.order_repository.save(order)
         return Result.success(OrderResponse.from_entity(order))
