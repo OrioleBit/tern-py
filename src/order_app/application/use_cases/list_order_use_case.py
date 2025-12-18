@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from uuid import UUID
 
 from order_app.application.common.result import Result
 from order_app.application.dtos.order_dtos import ListOrderRequest, OrderResponse

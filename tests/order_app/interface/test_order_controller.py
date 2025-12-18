@@ -1,17 +1,11 @@
 from unittest.mock import MagicMock
-from uuid import UUID, uuid4
+from uuid import uuid4
 
 import pytest
 from freezegun import freeze_time
 
 from order_app.application.common.result import Error, Result
-from order_app.application.dtos.order_dtos import (
-    CreateOrderRequest,
-    ItemRequest,
-    OrderResponse,
-)
-from order_app.domain.entities import order
-from order_app.domain.value_objects.order_status import OrderStatus
+from order_app.application.dtos.order_dtos import CreateOrderRequest, ItemRequest
 from order_app.interface.controllers.order_controller import (
     AuthContext,
     CreateOrderRequestData,
@@ -20,7 +14,6 @@ from order_app.interface.controllers.order_controller import (
 )
 from order_app.interface.presenters.base import OrderPresenter
 from order_app.interface.view_models.error_vm import ErrorViewModel
-from order_app.interface.view_models.order_vm import OrderViewModel
 
 
 @pytest.fixture

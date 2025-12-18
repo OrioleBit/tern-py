@@ -40,11 +40,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework.authtoken",
     "drf_spectacular",
     "drf_spectacular_sidecar",  # required for Django collectstatic discovery
-    "user",
-    "product",
-    "order",
+    "order_app.infrastructure.web.django_order_app.user",
+    "order_app.infrastructure.web.django_order_app.product",
+    "order_app.infrastructure.web.django_order_app.order",
 ]
 
 MIDDLEWARE = [
@@ -80,7 +81,9 @@ WSGI_APPLICATION = "django_order_app.wsgi.application"
 
 # DRF
 REST_FRAMEWORK = {
-    # YOUR SETTINGS
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.BasicAuthentication",
+    ],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 

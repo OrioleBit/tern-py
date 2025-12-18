@@ -1,3 +1,4 @@
+from decimal import Decimal
 from uuid import uuid4
 
 from django.contrib.auth import get_user_model
@@ -24,6 +25,9 @@ class OrderItem(models.Model):
         "product.Product", on_delete=models.PROTECT, related_name="order_items"
     )
     quantity = models.PositiveIntegerField()
+    price_per_unit = models.DecimalField(
+        max_digits=10, decimal_places=2, default=Decimal("0")
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

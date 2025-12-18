@@ -2,8 +2,6 @@ from decimal import Decimal
 from unittest import mock
 from uuid import uuid4
 
-import pytest
-
 from order_app.application.common.result import Error
 from order_app.application.dtos.order_dtos import OrderResponse
 from order_app.application.exception import OrderNotFoundError, ProductNotFoundError
