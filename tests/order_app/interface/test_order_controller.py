@@ -46,6 +46,7 @@ def test_create_order_handler_failure(create_order_use_case):
         create_order_use_case=create_order_use_case,
         list_order_user_case=None,
         edit_order_use_case=None,
+        delete_order_use_case=None,
         presenter=mock_presenter,
     )
     user_id = uuid4()
@@ -91,6 +92,7 @@ def test_create_order_handler_success(create_order_use_case):
         create_order_use_case=create_order_use_case,
         list_order_user_case=None,
         edit_order_use_case=None,
+        delete_order_use_case=None,
         presenter=mock_presenter,
     )
 

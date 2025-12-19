@@ -29,6 +29,13 @@ class DjangoOrderRepository(OrderRepository):
             if order_item.quantity == 0:
                 order_item.delete()
 
+    def delete(self, order_id):
+        django_order = DjangoOrder.objects.get(id=order_id)
+        for item in django_order.items.all():
+            item.product.stock_quantity += item.quantity
+            item.product.save()
+        django_order.delete()
+
     def get_by_id(self, order_id: UUID) -> Order:
         django_order = DjangoOrder.objects.get(id=order_id)
         order = self.to_order(django_order)

@@ -2,11 +2,16 @@ from dataclasses import dataclass
 from typing import Literal
 from uuid import UUID
 
-from order_app.application.dtos.order_dtos import EditOrderRequest, ItemRequest
+from order_app.application.dtos.order_dtos import (
+    DeleteOrderRequest,
+    EditOrderRequest,
+    ItemRequest,
+)
 from order_app.application.use_cases.create_order import (
     CreateOrderRequest,
     CreateOrderUseCase,
 )
+from order_app.application.use_cases.delete_order import DeleteOrderUseCase
 from order_app.application.use_cases.edit_order_use_case import EditOrderUseCase
 from order_app.application.use_cases.list_order_use_case import (
     ListOrderRequest,
@@ -39,6 +44,11 @@ class CreateOrderRequestData:
 
 
 @dataclass
+class CreateOrderResponseData:
+    order_id: str
+
+
+@dataclass
 class EditProductInOrderRequestData:
     auth: AuthContext
     order_id: str
@@ -47,14 +57,14 @@ class EditProductInOrderRequestData:
 
 
 @dataclass
-class CreateOrderResponseData:
-    order_id: str
-
-
-# LIST ORDER DTOS
-@dataclass
 class ListOderRequestData:
     auth: AuthContext
+
+
+@dataclass
+class DeleteOrderRequestData:
+    auth: AuthContext
+    order_id: str
 
 
 @dataclass
@@ -62,6 +72,7 @@ class OrderController:
     create_order_use_case: CreateOrderUseCase
     list_order_user_case: ListOrderUseCase
     edit_order_use_case: EditOrderUseCase
+    delete_order_use_case: DeleteOrderUseCase
     presenter: OrderPresenter
 
     def handle_create(
@@ -77,6 +88,24 @@ class OrderController:
         response = self.create_order_use_case.execute(request)
         if response.is_success:
             view_model = self.presenter.present_order(response.value)
+            return OperationResult.succeed(view_model)
+        else:
+            error_vm = self.presenter.present_error(
+                response.error.message, response.error.code
+            )
+            return OperationResult.fail(error_vm.message, error_vm.code)
+
+    def handle_remove(self, request_data: DeleteOrderRequestData):
+        user_id = UUID(request_data.auth.user_id)
+        response = self.delete_order_use_case.execute(
+            DeleteOrderRequest(
+                order_id=request_data.order_id,
+                user_id=user_id,
+                role=UserRole.from_str(request_data.auth.role),
+            )
+        )
+        if response:
+            view_model = self.presenter.present_remove(response.value)
             return OperationResult.succeed(view_model)
         else:
             error_vm = self.presenter.present_error(

@@ -42,3 +42,8 @@ class OrderItem(models.Model):
                 name="unique_product_per_order",
             )
         ]
+
+    def delete(self, *args, **kwargs):
+        self.product.stock_quantity += self.quantity
+        self.product.save()
+        return super().delete(*args, **kwargs)

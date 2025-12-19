@@ -18,5 +18,9 @@ class OrderPresenter(ABC):
         pass
 
     @abstractmethod
+    def present_remove(result: bool) -> list[OrderViewModel]:
+        return result
+
+    @abstractmethod
     def present_error(error: str, code: Optional[str] = None) -> ErrorViewModel:
         pass
