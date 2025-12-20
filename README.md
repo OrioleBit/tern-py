@@ -1,5 +1,7 @@
 # Order Management App
 
+![coverage](docs/coverage_badge.svg)
+
 ## Overview
 
 This is a simple order management Python project following **Clean Architecture** and **DDD** principles.
