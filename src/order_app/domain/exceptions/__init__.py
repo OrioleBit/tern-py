@@ -1,10 +1,22 @@
+__all__ = [
+    "InvalidTokenError",
+    "TokenExpiredError",
+    "UserNotFoundError",
+    "UserAlreadyExistsError",
+    "OrderNotFoundError",
+    "ProductNotFoundError",
+    "InsufficientStockError",
+    "InvalidUserRoleError",
+]
+
+
 from uuid import UUID
 
-
-class DomainError(Exception):
-    """Base class for domain-specific errors."""
-
-    pass
+from order_app.domain.exceptions.base import DomainError
+from order_app.domain.exceptions.token_errors import (
+    InvalidTokenError,
+    TokenExpiredError,
+)
 
 
 class UserNotFoundError(DomainError):

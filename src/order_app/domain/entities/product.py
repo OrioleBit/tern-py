@@ -1,7 +1,7 @@
 import datetime
 from dataclasses import dataclass, field
 
-from order_app.domain.exception import InsufficientStockError
+from order_app.domain.exceptions import InsufficientStockError
 from order_app.domain.value_objects.money import Money
 
 from .entity import Entity

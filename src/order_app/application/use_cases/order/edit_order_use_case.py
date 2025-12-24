@@ -4,7 +4,7 @@ from order_app.application.common.result import Error, Result
 from order_app.application.dtos.order_dtos import EditOrderRequest, OrderResponse
 from order_app.application.repositories import OrderRepository, ProductRepository
 from order_app.domain.entities.user import UserRole
-from order_app.domain.exception import OrderNotFoundError, ProductNotFoundError
+from order_app.domain.exceptions import OrderNotFoundError, ProductNotFoundError
 
 
 @dataclass

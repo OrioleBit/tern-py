@@ -1,6 +1,6 @@
 from enum import Enum, auto
 
-from order_app.domain.exception import InvalidUserRoleError
+from order_app.domain.exceptions import InvalidUserRoleError
 
 
 class UserRole(Enum):

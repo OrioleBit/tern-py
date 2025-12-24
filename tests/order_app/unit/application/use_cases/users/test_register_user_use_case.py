@@ -7,7 +7,7 @@ from order_app.application.dtos.user.register import (
 )
 from order_app.application.use_cases.user import RegisterUserUseCase
 from order_app.domain.entities.user import User
-from order_app.domain.exception import UserNotFoundError
+from order_app.domain.exceptions import UserNotFoundError
 from order_app.domain.value_objects.user_role import UserRole
 
 

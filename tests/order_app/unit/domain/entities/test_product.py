@@ -1,7 +1,7 @@
 import pytest
 
 from order_app.domain.entities.product import Product
-from order_app.domain.exception import InsufficientStockError
+from order_app.domain.exceptions import InsufficientStockError
 
 
 @pytest.fixture

@@ -11,7 +11,7 @@ from order_app.application.use_cases.order.edit_order_use_case import (
 from order_app.domain.entities.order import Order
 from order_app.domain.entities.product import Product
 from order_app.domain.entities.user import UserRole
-from order_app.domain.exception import OrderNotFoundError, ProductNotFoundError
+from order_app.domain.exceptions import OrderNotFoundError, ProductNotFoundError
 from order_app.domain.value_objects.money import Money
 
 

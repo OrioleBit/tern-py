@@ -13,7 +13,7 @@ from order_app.application.use_cases.order.list_order_use_case import ListOrderU
 from order_app.application.use_cases.user.register import RegisterUserUseCase
 from order_app.interface.controllers.order.order_controller import OrderController
 from order_app.interface.controllers.user.register_user import RegisterUserController
-from order_app.interface.presenters.base import OrderPresenter, UserPresenter
+from order_app.interface.presenters.base import OrderPresenter, RegisterPresenter
 
 
 @dataclass
@@ -23,7 +23,7 @@ class CompositionRoot:
     user_repository: UserRepository
     password_hasher: PasswordHasher
     order_presenter: OrderPresenter
-    user_presenter: UserPresenter
+    user_presenter: RegisterPresenter
 
     def __post_init__(self):
         create_order_use_case = CreateOrderUseCase(

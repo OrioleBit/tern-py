@@ -8,7 +8,7 @@ from order_app.application.dtos.user.register import (
 from order_app.application.ports.password_hasher import PasswordHasher
 from order_app.application.repositories.user_repository import UserRepository
 from order_app.domain.entities.user import User
-from order_app.domain.exception import UserNotFoundError
+from order_app.domain.exceptions import UserNotFoundError
 
 
 @dataclass

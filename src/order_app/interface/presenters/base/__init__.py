@@ -1,4 +1,4 @@
-__all__ = ["OrderPresenter", "UserPresenter"]
+__all__ = ["OrderPresenter", "RegisterPresenter"]
 
 from .order import OrderPresenter
-from .user import UserPresenter
+from .user import RegisterPresenter

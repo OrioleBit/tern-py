@@ -10,7 +10,7 @@ from order_app.application.use_cases.order.create_order import (
     CreateOrderUseCase,
 )
 from order_app.domain.entities.order import Order
-from order_app.domain.exception import InsufficientStockError, ProductNotFoundError
+from order_app.domain.exceptions import InsufficientStockError, ProductNotFoundError
 from order_app.domain.value_objects.money import Money
 
 

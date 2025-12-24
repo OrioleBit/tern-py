@@ -1,6 +1,6 @@
 import pytest
 
-from order_app.domain.exception import InvalidUserRoleError
+from order_app.domain.exceptions import InvalidUserRoleError
 from order_app.domain.value_objects.user_role import UserRole
 
 

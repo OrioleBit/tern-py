@@ -6,7 +6,7 @@ from order_app.application.use_cases.order.delete_order import (
     DeleteOrderRequest,
     DeleteOrderUseCase,
 )
-from order_app.domain.exception import OrderNotFoundError
+from order_app.domain.exceptions import OrderNotFoundError
 from order_app.domain.value_objects import UserRole
 
 

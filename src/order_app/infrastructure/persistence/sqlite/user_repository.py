@@ -4,7 +4,7 @@ from sqlite3 import IntegrityError
 
 from order_app.application.repositories.user_repository import UserRepository
 from order_app.domain.entities.user import User
-from order_app.domain.exception import UserAlreadyExistsError, UserNotFoundError
+from order_app.domain.exceptions import UserAlreadyExistsError, UserNotFoundError
 from order_app.domain.value_objects.user_role import UserRole
 
 

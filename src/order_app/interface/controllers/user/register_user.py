@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from order_app.application.dtos.user.register import RegisterUserRequestDto
 from order_app.application.use_cases.user.register import RegisterUserUseCase
 from order_app.interface.common.operation_result import OperationResult
-from order_app.interface.presenters.base.user import UserPresenter
+from order_app.interface.presenters.base.user import RegisterPresenter
 from order_app.interface.view_models.user_vm import UserViewModel
 
 
@@ -17,7 +17,7 @@ class RegisterUserInputDto:
 @dataclass
 class RegisterUserController:
     register_user_use_case: RegisterUserUseCase
-    presenter: UserPresenter
+    presenter: RegisterPresenter
 
     def handle(self, input: RegisterUserInputDto) -> OperationResult[UserViewModel]:
         request_dto = RegisterUserRequestDto(
@@ -28,7 +28,7 @@ class RegisterUserController:
 
         if result.is_success:
             user_response = result.value
-            user_view_model = self.presenter.present_user(user_response)
+            user_view_model = self.presenter.present_success(user_response)
             return OperationResult.succeed(user_view_model)
         else:
             error_vm = self.presenter.present_error(
