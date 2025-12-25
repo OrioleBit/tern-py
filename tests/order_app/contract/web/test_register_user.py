@@ -19,7 +19,7 @@ def composition_root():
 
 @pytest.fixture
 def client(composition_root):
-    app = create_web_app(composition_root=composition_root, testing=True)
+    app = create_web_app(testing=True)
     return TestClient(app)
 
 
@@ -47,7 +47,7 @@ def client(composition_root):
 def test_register_user_invalid_data(
     client, payload, expected_status, expected_loc, expected_msg_substring
 ):
-    response = client.post("/user/register", json=payload)
+    response = client.post("/users/register", json=payload)
     assert response.status_code == expected_status
 
     detail = response.json()["detail"][0]
