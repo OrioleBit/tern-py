@@ -1,10 +1,11 @@
 from dataclasses import dataclass, field
 from typing import Literal
+from uuid import UUID
 
 
 @dataclass
 class UserViewModel:
-    id: str
+    id: UUID
     name: str
     email: str
     role: str

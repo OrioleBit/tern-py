@@ -1,7 +1,7 @@
-from os import access
 from uuid import UUID
 
 from fastapi import Depends, HTTPException
+from fastapi.responses import JSONResponse
 from order_app.infrastructure.composition_root import CompositionRoot
 from order_app.infrastructure.web.fastapi.dependencies import get_composition_root
 from order_app.interface.controllers.user.register_user import RegisterUserInputDto
@@ -16,8 +16,7 @@ class RegisterUserRequest(BaseModel):
 
 
 class RegisterUserResponse(BaseModel):
-    user_id: UUID
-    access_token: str
+    user_id: str
 
 
 def register_user(
@@ -30,10 +29,20 @@ def register_user(
         )
     )
     if operation_result.is_success:
-        return RegisterUserResponse(
-            user_id=operation_result.success.user.id,
-            access_token=operation_result.success.tokens.access_token,
+        response = JSONResponse(
+            content=RegisterUserResponse(
+                user_id=str(operation_result.success.user.id)
+            ).model_dump(),
+            status_code=status.HTTP_201_CREATED,
         )
+        response.set_cookie(
+            key="access_token",
+            value=operation_result.success.tokens.access_token,
+            httponly=True,
+            secure=True,
+            samesite="lax",
+        )
+        return response
     else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

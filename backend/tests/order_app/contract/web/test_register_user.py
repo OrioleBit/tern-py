@@ -1,4 +1,5 @@
 from unittest.mock import Mock
+from uuid import UUID
 
 import pytest
 from fastapi import status
@@ -82,12 +83,12 @@ def test_register_user_success(test_client, composition_root_instance):
     )
     success_vm = RegisterUserViewModel(
         user=UserViewModel(
-            id="123e4567-e89b-12d3-a456-426614174000",
+            id=UUID("123e4567-e89b-12d3-a456-426614174000"),
             name="Test User",
             email="test@example.com",
             role="customer",
         ),
-        tokens=TokensViewModel(access_token="access_token"),
+        tokens=TokensViewModel(access_token="test-access_token"),
     )
     composition_root_instance.register_controller.handle = Mock(
         return_value=OperationResult.succeed(success_vm)
@@ -99,10 +100,9 @@ def test_register_user_success(test_client, composition_root_instance):
         controller_input
     )
     assert response.status_code == status.HTTP_201_CREATED
-    assert response.json() == {
-        "user_id": "123e4567-e89b-12d3-a456-426614174000",
-        "access_token": "access_token",
-    }
+    assert "access_token" in response.cookies
+    assert response.cookies["access_token"] == "test-access_token"
+    assert response.json() == {"user_id": "123e4567-e89b-12d3-a456-426614174000"}
 
 
 def test_register_user_failure(test_client, composition_root_instance):
