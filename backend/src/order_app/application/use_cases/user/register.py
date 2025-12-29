@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from math import exp
 
 from order_app.application.common.result import Error, Result
 from order_app.application.dtos.user.register import (
@@ -7,9 +8,13 @@ from order_app.application.dtos.user.register import (
     TokensResponseDto,
     UserResponseDto,
 )
-from order_app.application.ports.jwt_service import JwtService
+from order_app.application.ports.auth_token_service import AuthTokenService
 from order_app.application.ports.password_hasher import PasswordHasher
+from order_app.application.repositories.auth.refresh_token_repository import (
+    RefreshTokenRepository,
+)
 from order_app.application.repositories.user_repository import UserRepository
+from order_app.domain.entities.auth.refresh_token import RefreshToken
 from order_app.domain.entities.user import User
 from order_app.domain.exceptions import UserNotFoundError
 
@@ -18,7 +23,8 @@ from order_app.domain.exceptions import UserNotFoundError
 class RegisterUserUseCase:
     user_repository: UserRepository
     password_hasher: PasswordHasher
-    jwt_service: JwtService
+    auth_token_service: AuthTokenService
+    refresh_token_repo: RefreshTokenRepository
 
     def execute(
         self, request: RegisterUserRequestDto
@@ -33,15 +39,25 @@ class RegisterUserUseCase:
                 password_hash=password_hash,
             )
 
-            self.user_repository.create(user)
-            token = self.jwt_service.generate_token(
-                payload={"sub": str(user.id), "role": user.role.name}
+            self.user_repository.create(user=user)
+            access_token = self.auth_token_service.generate_token(
+                payload={"sub": str(user.id), "role": user.role.name}, expires_in=3600
             )
+            refresh_token_str = self.auth_token_service.generate_token(
+                payload={"sub": str(user.id), "role": user.role.name},
+                expires_in=7 * 24 * 3600,
+            )
+            refresh_token = RefreshToken.new(
+                user_id=user.id,
+                token=refresh_token_str,
+                expires_at=7 * 24 * 3600,
+            )
+            self.refresh_token_repo.save(refresh_token=refresh_token)
             return Result.success(
                 RegisterUserResponseDto(
                     user=UserResponseDto.from_entity(user),
                     tokens=TokensResponseDto(
-                        access_token=token,
+                        access_token=access_token, refresh_token=refresh_token_str
                     ),
                 )
             )

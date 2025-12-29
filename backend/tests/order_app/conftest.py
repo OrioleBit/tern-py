@@ -57,7 +57,7 @@ def product_repository():
 @pytest.fixture
 def refresh_token_repo():
     class MockRefreshTokenRepository(RefreshTokenRepository):
-        def save(self, refresh_token: str):
+        def save(self, refresh_token: RefreshToken):
             pass
 
         def get_by_token(self, token: str) -> RefreshToken:

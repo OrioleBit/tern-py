@@ -45,7 +45,7 @@ def test_login_user_success(login_user_use_case):
         email="test@email.com",
         role="user",
         access_token="access_token",
-        expires_in=3600,
+        refresh_token="refresh_token",
     )
     login_user_use_case.execute.return_value = Result.success(use_case_response)
     mock_presenter = MagicMock(spec=LoginPresenter)

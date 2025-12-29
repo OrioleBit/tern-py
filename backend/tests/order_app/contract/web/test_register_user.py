@@ -17,11 +17,14 @@ from order_app.interface.view_models.user_vm import (
 
 
 @pytest.fixture
-def composition_root(user_repository, register_user_controller) -> CompositionRoot:
+def composition_root(
+    user_repository, refresh_token_repo, register_user_controller
+) -> CompositionRoot:
     composition_root = CompositionRoot(
         order_repository=None,
         product_repository=None,
         user_repository=user_repository,
+        refresh_token_repo=refresh_token_repo,
         order_presenter=None,
         register_presenter=None,
         login_presenter=None,

@@ -2,7 +2,7 @@ import datetime
 from dataclasses import dataclass
 
 import jwt
-from order_app.application.ports.jwt_service import AuthTokenService
+from order_app.application.ports.auth_token_service import AuthTokenService
 from order_app.domain.exceptions.token_errors import (
     InvalidTokenError,
     TokenExpiredError,

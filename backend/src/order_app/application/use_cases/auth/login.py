@@ -5,7 +5,7 @@ from order_app.application.dtos.user.login import (
     LoginUserRequestDto,
     LoginUserResponseDto,
 )
-from order_app.application.ports.jwt_service import AuthTokenService
+from order_app.application.ports.auth_token_service import AuthTokenService
 from order_app.application.ports.password_hasher import PasswordHasher
 from order_app.application.repositories.auth.refresh_token_repository import (
     RefreshTokenRepository,

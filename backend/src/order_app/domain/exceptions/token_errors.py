@@ -19,3 +19,10 @@ class InvalidTokenError(JwtError):
 
     def __init__():
         super().__init__("Invalid token")
+
+
+class RefreshTokenNotFoundError(JwtError):
+    """Raised when a refresh token is not found."""
+
+    def __init__():
+        super().__init__("Refresh token not found")

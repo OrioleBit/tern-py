@@ -9,14 +9,18 @@ from order_app.application.dtos.user.register import (
     UserResponseDto,
 )
 from order_app.application.use_cases.user import RegisterUserUseCase
-from order_app.domain.entities.user import User
 from order_app.domain.exceptions import UserNotFoundError
 from order_app.domain.value_objects.user_role import UserRole
 
 
-def test_register_user_found_by_email(user_repository, jwt_service):
+def test_register_user_found_by_email(
+    user_repository, auth_token_service, refresh_token_repo
+):
     use_case = RegisterUserUseCase(
-        user_repository=user_repository, password_hasher=None, jwt_service=jwt_service
+        user_repository=user_repository,
+        password_hasher=None,
+        auth_token_service=auth_token_service,
+        refresh_token_repo=refresh_token_repo,
     )
     request = RegisterUserRequestDto(name="name", email="email", password="password")
 
@@ -33,34 +37,48 @@ def test_register_user_found_by_email(user_repository, jwt_service):
 
 
 @freeze_time("2022-01-01")
-def test_register_user(user_repository, password_hasher, jwt_service):
+def test_register_user(
+    user_repository, password_hasher, auth_token_service, refresh_token_repo
+):
     user_repository.get_by_email.side_effect = UserNotFoundError
-    jwt_service.generate_token = MagicMock(return_value="access_token")
+    user_repository.create = MagicMock()
+    auth_token_service.generate_token = MagicMock()
+    auth_token_service.generate_token.side_effect = [
+        "access_token_123",
+        "refresh_token_456",
+    ]
+    refresh_token_repo.save = MagicMock()
     use_case = RegisterUserUseCase(
         user_repository=user_repository,
         password_hasher=password_hasher,
-        jwt_service=jwt_service,
+        auth_token_service=auth_token_service,
+        refresh_token_repo=refresh_token_repo,
     )
     request = RegisterUserRequestDto(name="name", email="email", password="password")
 
     result = use_case.execute(request)
 
-    desired_user = User.new(
-        name=request.name,
-        email=request.email,
-        password_hash=password_hasher.hash(request.password),
-        role=UserRole.CUSTOMER,
-    )
+    new_user = user_repository.create.call_args.kwargs["user"]
+    new_user.name == request.name
+    new_user.email == request.email
+    new_user.password_hash == password_hasher.hash(request.password)
+    new_user.role == UserRole.CUSTOMER
 
-    desired_user.id = result.value.user.id
-    user_repository.get_by_email.assert_called_once_with(request.email)
-    jwt_service.generate_token.assert_called_once_with(
-        payload={"sub": str(desired_user.id), "role": desired_user.role.name}
-    )
-    user_repository.create.assert_called_once_with(desired_user)
+    refresh_token = refresh_token_repo.save.call_args.kwargs["refresh_token"]
+    assert refresh_token.user_id == new_user.id
+    assert refresh_token.token == "refresh_token_456"
+    assert refresh_token.expires_at == 7 * 24 * 3600
+    assert not refresh_token.is_revoked
 
     assert result.is_success
     assert result.value == RegisterUserResponseDto(
-        user=UserResponseDto.from_entity(desired_user),
-        tokens=TokensResponseDto(access_token="access_token"),
+        user=UserResponseDto(
+            id=new_user.id,
+            name=new_user.name,
+            email=new_user.email,
+            role=new_user.role.value,
+        ),
+        tokens=TokensResponseDto(
+            access_token="access_token_123", refresh_token="refresh_token_456"
+        ),
     )

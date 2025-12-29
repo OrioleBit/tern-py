@@ -1,12 +1,8 @@
 from dataclasses import dataclass
 
 import pytest
-from order_app.application.ports.jwt_service import AuthTokenService
+from order_app.application.ports.auth_token_service import AuthTokenService
 from order_app.application.ports.password_hasher import PasswordHasher
-from order_app.application.repositories.auth.refresh_token_repository import (
-    RefreshTokenRepository,
-)
-from order_app.domain.entities.auth.refresh_token import RefreshToken
 
 
 @pytest.fixture

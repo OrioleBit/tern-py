@@ -6,13 +6,15 @@ from order_app.application.repositories import (
     ProductRepository,
     UserRepository,
 )
+from order_app.application.repositories.auth.refresh_token_repository import (
+    RefreshTokenRepository,
+)
 from order_app.application.use_cases.auth.login import LoginUserUseCase
 from order_app.application.use_cases.order.create_order import CreateOrderUseCase
 from order_app.application.use_cases.order.delete_order import DeleteOrderUseCase
 from order_app.application.use_cases.order.edit_order_use_case import EditOrderUseCase
 from order_app.application.use_cases.order.list_order_use_case import ListOrderUseCase
 from order_app.application.use_cases.user.register import RegisterUserUseCase
-from order_app.infrastructure.security.argon2_hasher import Argon2PasswordHasher
 from order_app.infrastructure.security.pyjwt_service import PyJWTService
 from order_app.interface.controllers.order.order_controller import OrderController
 from order_app.interface.controllers.user.login_user import LoginUserController
@@ -29,6 +31,7 @@ class CompositionRoot:
     order_repository: OrderRepository
     product_repository: ProductRepository
     user_repository: UserRepository
+    refresh_token_repo: RefreshTokenRepository
     password_hasher: PasswordHasher
     order_presenter: OrderPresenter
     register_presenter: RegisterPresenter
@@ -55,12 +58,14 @@ class CompositionRoot:
         register_user_use_case = RegisterUserUseCase(
             user_repository=self.user_repository,
             password_hasher=self.password_hasher,
-            jwt_service=jwt_service,
+            auth_token_service=jwt_service,
+            refresh_token_repo=self.refresh_token_repo,
         )
         login_user_use_case = LoginUserUseCase(
             user_repository=self.user_repository,
             password_hasher=self.password_hasher,
-            jwt_service=jwt_service,
+            auth_token_service=jwt_service,
+            refresh_token_repo=self.refresh_token_repo,
         )
 
         ## controllers
