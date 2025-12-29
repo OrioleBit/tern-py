@@ -1,5 +1,6 @@
 __all__ = [
     "InvalidTokenError",
+    "RefreshTokenNotFoundError",
     "TokenExpiredError",
     "UserNotFoundError",
     "UserAlreadyExistsError",
@@ -15,6 +16,7 @@ from uuid import UUID
 from order_app.domain.exceptions.base import DomainError
 from order_app.domain.exceptions.token_errors import (
     InvalidTokenError,
+    RefreshTokenNotFoundError,
     TokenExpiredError,
 )
 

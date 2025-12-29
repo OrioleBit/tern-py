@@ -2,8 +2,7 @@ import datetime
 from dataclasses import dataclass
 
 import jwt
-
-from order_app.application.ports.jwt_service import JwtService
+from order_app.application.ports.jwt_service import AuthTokenService
 from order_app.domain.exceptions.token_errors import (
     InvalidTokenError,
     TokenExpiredError,
@@ -11,16 +10,15 @@ from order_app.domain.exceptions.token_errors import (
 
 
 @dataclass
-class PyJWTService(JwtService):
+class PyJWTService(AuthTokenService):
     secret_key: str
     algorithm: str = "HS256"
-    expires_in: int = 3600  # in seconds
 
-    def generate_token(self, payload: dict) -> str:
+    def generate_token(self, payload: dict, expires_in: int = None) -> str:
         payload_copy = payload.copy()
         now = datetime.datetime.now(datetime.timezone.utc)
         payload_copy["iat"] = now
-        payload_copy["exp"] = now + datetime.timedelta(seconds=self.expires_in)
+        payload_copy["exp"] = now + datetime.timedelta(seconds=expires_in)
         token = jwt.encode(payload_copy, self.secret_key, algorithm=self.algorithm)
         return token
 

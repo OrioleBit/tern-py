@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 
 
 @dataclass
-class JwtService(ABC):
+class AuthTokenService(ABC):
     secret_key: str
     algorithm: str = field(default="HS256")
     expires_in: int = field(default=3600)  # in seconds

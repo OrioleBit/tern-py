@@ -2,9 +2,11 @@ import datetime
 from dataclasses import dataclass
 from uuid import UUID
 
+from order_app.domain.entities.entity import Entity
+
 
 @dataclass
-class RefreshToken:
+class RefreshToken(Entity):
     user_id: UUID
     token: str
     expires_at: int  # Unix timestamp

@@ -1,9 +1,12 @@
 from dataclasses import dataclass
 
 import pytest
-
-from order_app.application.ports.jwt_service import JwtService
+from order_app.application.ports.jwt_service import AuthTokenService
 from order_app.application.ports.password_hasher import PasswordHasher
+from order_app.application.repositories.auth.refresh_token_repository import (
+    RefreshTokenRepository,
+)
+from order_app.domain.entities.auth.refresh_token import RefreshToken
 
 
 @pytest.fixture
@@ -19,13 +22,13 @@ def password_hasher():
 
 
 @pytest.fixture
-def jwt_service():
+def auth_token_service():
     @dataclass
-    class MockJwtService(JwtService):
-        def generate_token(self, payload) -> str:
+    class MockAuthTokenService(AuthTokenService):
+        def generate_token(self, payload: dict, expires_in: int = None) -> str:
             return "simple_token"
 
-        def verify_token(self, token) -> dict:
+        def verify_token(self, token: str) -> dict:
             return {"sub": "user_id", "role": "user_role"}
 
-    return MockJwtService(secret_key="secret_key", algorithm="HS256", expires_in=3600)
+    return MockAuthTokenService(secret_key="secret_key", algorithm="HS256")

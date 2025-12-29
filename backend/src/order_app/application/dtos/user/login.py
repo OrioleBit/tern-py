@@ -17,4 +17,4 @@ class LoginUserResponseDto:
     email: str
     role: UserRole
     access_token: str
-    expires_in: str
+    refresh_token: str

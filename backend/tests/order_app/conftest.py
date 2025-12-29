@@ -1,6 +1,10 @@
 from unittest.mock import MagicMock
 
 import pytest
+from order_app.application.repositories.auth.refresh_token_repository import (
+    RefreshTokenRepository,
+)
+from order_app.domain.entities.auth.refresh_token import RefreshToken
 
 
 # Application-level fixtures
@@ -48,3 +52,18 @@ def product_repository():
             self.get_by_id = MagicMock()
 
     return MockProductRepository()
+
+
+@pytest.fixture
+def refresh_token_repo():
+    class MockRefreshTokenRepository(RefreshTokenRepository):
+        def save(self, refresh_token: str):
+            pass
+
+        def get_by_token(self, token: str) -> RefreshToken:
+            return "refresh_token"
+
+        def revoke_token(self, token_id: str):
+            pass
+
+    return MockRefreshTokenRepository

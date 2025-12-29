@@ -15,12 +15,12 @@ def register_user_use_case(user_repository):
 
 
 @pytest.fixture
-def login_user_use_case(user_repository, password_hasher, jwt_service):
+def login_user_use_case(user_repository, password_hasher, auth_token_service):
     class MockLoginUserUseCase(LoginUserUseCase):
         def __init__(self):
             self.execute = MagicMock()
             self.user_repository = user_repository
             self.password_hasher = password_hasher
-            self.jwt_service = jwt_service
+            self.auth_token_service = auth_token_service
 
     return MockLoginUserUseCase()
