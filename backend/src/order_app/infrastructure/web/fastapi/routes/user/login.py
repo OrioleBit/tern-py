@@ -1,16 +1,15 @@
 from fastapi import Depends, HTTPException
 from fastapi.responses import JSONResponse
-from order_app.domain.entities.auth import refresh_token
 from order_app.infrastructure.composition_root import CompositionRoot
 from order_app.infrastructure.web.fastapi.dependencies import get_composition_root
 from order_app.interface.controllers.user.login_user import LoginUserInputDto
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, constr
 from starlette import status
 
 
 class LoginUserRequest(BaseModel):
     email: EmailStr
-    password: str
+    password: constr(min_length=8)
 
 
 class LoginUserResponse(BaseModel):
