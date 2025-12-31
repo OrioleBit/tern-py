@@ -15,32 +15,34 @@ class SqliteRefreshTokenRepository(RefreshTokenRepository):
     def save(self, refresh_token: RefreshToken):
         cursor = self.connection.cursor()
 
-        cursor.execute(
-            """
-            INSERT INTO refresh_tokens (user_id, token, expires_at, is_revoked)
-            VALUES (?, ?, ?, ?)
-            """,
-            (
-                str(refresh_token.user_id),
-                refresh_token.token,
-                refresh_token.expires_at,
-                refresh_token.is_revoked,
-            ),
-        )
         try:
+            cursor.execute(
+                """
+            INSERT INTO refresh_tokens (id, user_id, token, expires_at, is_revoked)
+            VALUES (?, ?, ?, ?, ?)
+            """,
+                (
+                    str(refresh_token.id),
+                    str(refresh_token.user_id),
+                    refresh_token.token,
+                    refresh_token.expires_at,
+                    refresh_token.is_revoked,
+                ),
+            )
             self.connection.commit()
         except sqlite3.IntegrityError:
             cursor.execute(
                 """
                 UPDATE refresh_tokens
-                SET token = ?, expires_at = ?, is_revoked = ?
-                WHERE user_id = ?
+                SET token = ?, expires_at = ?, is_revoked = ?, user_id = ?
+                WHERE id = ?
                 """,
                 (
                     refresh_token.token,
                     refresh_token.expires_at,
                     refresh_token.is_revoked,
                     str(refresh_token.user_id),
+                    str(refresh_token.id),
                 ),
             )
             self.connection.commit()
