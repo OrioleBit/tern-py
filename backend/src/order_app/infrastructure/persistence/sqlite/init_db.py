@@ -1,8 +1,7 @@
-from order_app.infrastructure.persistence.sqlite.db import get_connection
+import sqlite3
 
 
-def init_db():
-    conn = get_connection()
+def init_db(conn: sqlite3.Connection):
     cursor = conn.cursor()
 
     cursor.execute(
@@ -27,4 +26,3 @@ def init_db():
         )"""
     )
     conn.commit()
-    conn.close()

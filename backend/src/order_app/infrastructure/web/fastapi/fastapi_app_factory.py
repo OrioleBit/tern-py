@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from order_app.infrastructure.persistence.sqlite.db import get_connection
 from order_app.infrastructure.persistence.sqlite.init_db import init_db
 from order_app.infrastructure.web.fastapi.routes.user import router as user_router
 
@@ -17,6 +18,8 @@ def create_web_app(testing: bool = False):
     if testing:
         app.testing = True
     else:
-        init_db()
+        conn = get_connection()
+        init_db(conn=conn)
+        conn.close()
     app.include_router(user_router, prefix="/users", tags=["Users"])
     return app
