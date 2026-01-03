@@ -1,9 +1,9 @@
 "use client";
 
-import { useSignup } from "../hooks/use-signup";
+import { useSignin } from "@/features/auth/hooks/use-signin";
 
-export const SignupForm = () => {
-  const { mutate, isPending } = useSignup();
+export const SigninForm = () => {
+  const { mutate, isPending } = useSignin();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,18 +21,6 @@ export const SignupForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-      <div className="space-y-1.5">
-        <label className="text-sm font-bold text-slate-700 ml-1">
-          Full Name
-        </label>
-        <input
-          name="name"
-          placeholder="John Doe"
-          required
-          className={inputStyles}
-        />
-      </div>
-
       <div className="space-y-1.5">
         <label className="text-sm font-bold text-slate-700 ml-1">
           Email Address
