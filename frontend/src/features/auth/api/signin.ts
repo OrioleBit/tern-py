@@ -1,7 +1,7 @@
-import { SignupPayload, SignupResponse } from "../types";
+import { SigninPayload, SigninResponse } from "../types";
 
 
-export const signin = async (data: SignupPayload): Promise<SignupResponse> => {
+export const signin = async (data: SigninPayload): Promise<SigninResponse> => {
     const response = await fetch("http://localhost:8000/users/login", {
         method: "POST",
         headers: {
